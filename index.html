@@ -55,11 +55,11 @@
           }
 
         ],
-        step: function(center, bodies, i){
+        step: function(previous, bodies, i){
             var body = bodies[i];
             for(var j = 0; j < bodies.length; j++) {
               if(j != i) {
-                var acc = acceleration(bodies[j].position, body.position, bodies[j].mass);
+                var acc = acceleration(previous[j].position, body.position, previous[j].mass);
                 body.velocity.iadd(acc);
                 body.position.iadd(body.velocity);
               }

@@ -218,7 +218,6 @@ var MultiBody = function(obj){
       bodies.push(obj.bodies[i].copy());
     }
 
-    var center = new Vec(400, 200, 0);
 
     var simulation = new Simulation({
         init: function(){
@@ -231,11 +230,14 @@ var MultiBody = function(obj){
           }
         },
         step: function(){
+            var previous = [];
             for(var i = 0; i < bodies.length; i++) {
-              var previous = bodies[i].copy();
-              obj.step(center, bodies, i);
+              previous.push(bodies[i].copy());
+            }
+            for(var i = 0; i < bodies.length; i++) {
+              obj.step(previous, bodies, i);
               renderer.dot(bodies[i].position, i);
-              renderer.line(previous.position, bodies[i].position, bodies[i].lineColor);
+              renderer.line(previous[i].position, bodies[i].position, bodies[i].lineColor);
             }
         }
     });
