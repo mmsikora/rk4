@@ -90,7 +90,7 @@ Vec.prototype = {
   }
 }
 
-var camera, scene, renderer, meshCenter;
+var camera, controls, scene, renderer, meshCenter;
 var mesh = [];
 var objBodies;
 
@@ -110,16 +110,16 @@ $(document).keydown(function(e) {
   var msg;                                                                     
   switch(e.which) {                                                            
     case 37:  //left                                                           
-      scene.rotation.y += Math.PI/32;                                                                                                  
+      scene.rotation.y += Math.PI/64;                                                                                                  
       break;                                                                   
     case 38: //up                                                              
-      scene.rotation.x += Math.PI/32;                                                                                 
+      scene.rotation.x += Math.PI/64;                                                                                 
       break;                                                                   
     case 39: //right                                                           
-      scene.rotation.y -= Math.PI/32;                                                                                                   
+      scene.rotation.y -= Math.PI/64;                                                                                                   
       break;                                                                   
     case 40: //down                                                            
-      scene.rotation.x -= Math.PI/32;                                                                                
+      scene.rotation.x -= Math.PI/64;                                                                                
       break;                                                                   
     default: return;                                                           
   }                                                                            
@@ -136,6 +136,10 @@ var Simulation = function(obj){
 
         camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
         camera.position.set(0, 0, 1000);
+
+        controls = new THREE.OrbitControls( camera );
+        controls.damping = 0.2;
+        controls.addEventListener( 'change', renderer );
         
         scene = new THREE.Scene();
      
