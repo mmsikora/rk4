@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>demo</title>
+  <style>
+      body {
+        font-family: Monospace;
+        background-color: #000;
+        margin: 0px;
+        overflow: hidden;
+      }
+  </style>
+  <!-- jquery src--!>
+  <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  <script src="three.min.js"></script>
+  <script src="script.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    new MultiBody({
+        bodies: [
+          {
+            position: new Vec(140, 120, 0),
+            velocity: new Vec(0, 1, 0)
+          },
+          {
+            position: new Vec(0,140, 120),
+            velocity: new Vec(0, 0, 1)
+          }
+        ],
+        step: function(center, body){
+            var acc = acceleration(center, body.position);
+            body.velocity.iadd(acc);
+            body.position.iadd(body.velocity);
+        }
+    });
+</script>
+</body>
+</html>
