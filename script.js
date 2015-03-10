@@ -92,11 +92,11 @@ Vec.prototype = {
 
 var camera, scene, renderer, meshCenter;
 var mesh = [];
-var objB;
+var objBodies;
 
 function animate() {
   requestAnimationFrame(animate);
-  objB.step();
+  objBodies.step();
   renderer.render(scene,camera);
 }
  
@@ -128,6 +128,7 @@ $(document).keydown(function(e) {
 
 var Simulation = function(obj){
     $(document).ready(function(){
+        objBodies = obj;
         renderer = new THREE.WebGLRenderer({ antialiasing: true } );
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -138,7 +139,9 @@ var Simulation = function(obj){
         
         scene = new THREE.Scene();
         
+        objBodies.init();
         // Sphere
+        /*
         for(var i = 0;  i < 4; i++) {
           if(i == 0) {
             var sphere = new THREE.SphereGeometry(10, 32, 32);
@@ -151,9 +154,10 @@ var Simulation = function(obj){
           mesh.push(new THREE.Mesh(sphere, material));
           scene.add(mesh[i]);
         }
+        */
       
         //lines 
-        material = new THREE.LineBasicMaterial({color: 0x0000ff});
+        var material = new THREE.LineBasicMaterial({color: 0x0000ff});
         var geometry = new THREE.Geometry();
         geometry.vertices.push(new THREE.Vector3(-5000, 0, 0));
         geometry.vertices.push(new THREE.Vector3(0, 0, 0));
@@ -179,21 +183,20 @@ var Simulation = function(obj){
         scene.add(light);
 
         $("body").append(renderer.domElement);
-            renderer.dot = function(position, i){
-                mesh[i].position.x = position.x;
-                mesh[i].position.y = position.y;
-                mesh[i].position.z = position.z;
-            };
-            renderer.line = function(a, b){
-              var material = new THREE.LineBasicMaterial({color: 0x00ff88, linewidth: 2});
-              var geometry = new THREE.Geometry();
-              geometry.vertices.push(new THREE.Vector3(a.x, a.y, a.z));
-              geometry.vertices.push(new THREE.Vector3(b.x, b.y, b.z));
-              var line = new THREE.Line(geometry, material);
-              scene.add(line);
-            };
-            objB = obj;
-            animate();
+        renderer.dot = function(position, i){
+          mesh[i].position.x = position.x;
+          mesh[i].position.y = position.y;
+          mesh[i].position.z = position.z;
+        };
+        renderer.line = function(a, b, lineColor){
+          var material = new THREE.LineBasicMaterial({color: lineColor, linewidth: 2});
+          var geometry = new THREE.Geometry();
+          geometry.vertices.push(new THREE.Vector3(a.x, a.y, a.z));
+          geometry.vertices.push(new THREE.Vector3(b.x, b.y, b.z));
+          var line = new THREE.Line(geometry, material);
+          scene.add(line);
+        };
+        animate();
     });
 }
 
@@ -233,12 +236,21 @@ var MultiBody = function(obj){
     var center = new Vec(400, 200, 0);
 
     var simulation = new Simulation({
+        init: function(){
+          for(var i = 0;  i < bodies.length; i++) {
+            console.log(bodies[i].color);
+            var sphere = new THREE.SphereGeometry(bodies[i].radius, 16, 16);
+            var material = new THREE.MeshBasicMaterial( { color: bodies[i].color, wireframe: true } );
+            mesh.push(new THREE.Mesh(sphere, material));
+            scene.add(mesh[i]);
+          }
+        },
         step: function(){
             for(var i = 0; i < bodies.length; i++) {
               var previous = bodies[i].copy();
               obj.step(center, bodies, i);
               renderer.dot(bodies[i].position, i);
-              renderer.line(previous.position, bodies[i].position);
+              renderer.line(previous.position, bodies[i].position, bodies[i].lineColor);
             }
         }
     });
