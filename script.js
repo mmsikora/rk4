@@ -138,23 +138,9 @@ var Simulation = function(obj){
         camera.position.set(0, 0, 1000);
         
         scene = new THREE.Scene();
-        
+     
+        // init spheres    
         objBodies.init();
-        // Sphere
-        /*
-        for(var i = 0;  i < 4; i++) {
-          if(i == 0) {
-            var sphere = new THREE.SphereGeometry(10, 32, 32);
-            var material = new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: true } );
-          }
-          else {
-            var sphere = new THREE.SphereGeometry(5, 32, 32);
-            var material = new THREE.MeshBasicMaterial( { color: 0xff00aa, wireframe: true } );
-          }
-          mesh.push(new THREE.Mesh(sphere, material));
-          scene.add(mesh[i]);
-        }
-        */
       
         //lines 
         var material = new THREE.LineBasicMaterial({color: 0x0000ff});
@@ -231,7 +217,6 @@ var MultiBody = function(obj){
       obj.bodies[i].copy = copy;
       bodies.push(obj.bodies[i].copy());
     }
-    console.log(bodies.length);
 
     var center = new Vec(400, 200, 0);
 
