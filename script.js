@@ -1,93 +1,93 @@
 var Vec = function(x, y, z){
-    this.type = 'Vector';
-    this.x = x;
-    this.y = y;
-    this.z = z;
+  this.type = 'Vector';
+  this.x = x;
+  this.y = y;
+  this.z = z;
 }
 
 Vec.prototype = {
-    isub: function(other){
-        this.x -= other.x;
-        this.y -= other.y;
-        this.z -= other.z;
-        return this;
-    },
-    sub: function(other){
-        return new Vec(
-            this.x - other.x,
-            this.y - other.y,
-            this.z - other.z
-        );
-    },
-    iadd: function(other){
-        this.x += other.x;
-        this.y += other.y;
-        this.z += other.z;
-        return this;
-    },
-    add: function(other){
-        return new Vec(
-            this.x + other.x,
-            this.y + other.y,
-            this.z + other.z
-        );
-    },
+  isub: function(other){
+    this.x -= other.x;
+    this.y -= other.y;
+    this.z -= other.z;
+    return this;
+  },
+  sub: function(other){
+    return new Vec(
+      this.x - other.x,
+      this.y - other.y,
+      this.z - other.z
+    );
+  },
+  iadd: function(other){
+    this.x += other.x;
+    this.y += other.y;
+    this.z += other.z;
+    return this;
+  },
+  add: function(other){
+    return new Vec(
+      this.x + other.x,
+      this.y + other.y,
+      this.z + other.z
+    );
+  },
 
-    imul: function(scalar){
-        this.x *= scalar;
-        this.y *= scalar;
-        this.z *= scalar;
-        return this;
-    },
-    mul: function(scalar){
-        return new Vec(
-            this.x * scalar,
-            this.y * scalar,
-            this.z * scalar
-        )
-    },
-    idiv: function(scalar){
-        this.x /= scalar;
-        this.y /= scalar;
-        this.z /= scalar;
-        return this;
-    },
-    div: function(scalar){
-        return new Vec(
-            this.x / scalar,
-            this.y / scalar,
-            this.z / scalar
-        )
-    },
+  imul: function(scalar){
+    this.x *= scalar;
+    this.y *= scalar;
+    this.z *= scalar;
+    return this;
+  },
+  mul: function(scalar){
+    return new Vec(
+      this.x * scalar,
+      this.y * scalar,
+      this.z * scalar
+    )
+  },
+  idiv: function(scalar){
+    this.x /= scalar;
+    this.y /= scalar;
+    this.z /= scalar;
+    return this;
+  },
+  div: function(scalar){
+    return new Vec(
+      this.x / scalar,
+      this.y / scalar,
+      this.z / scalar
+    )
+  },
 
-    normalized: function(){
-        var x=this.x, y=this.y, z=this.z;
-        var length = Math.sqrt(x*x + y*y + z*z)
-        return new Vec(x/length, y/length, z/length);
-    },
-    normalize: function(){
-        var x=this.x, y=this.y, z=this.z;
-        var length = Math.sqrt(x*x + y*y + z*z)
-        this.x = x/length;
-        this.y = y/length;
-        this.z = z/length;
-        return this;
-    },
+  normalized: function(){
+    var x=this.x, y=this.y, z=this.z;
+    var length = Math.sqrt(x*x + y*y + z*z)
+    return new Vec(x/length, y/length, z/length);
+  },
+  normalize: function(){
+    var x=this.x, y=this.y, z=this.z;
+    var length = Math.sqrt(x*x + y*y + z*z)
+    this.x = x/length;
+    this.y = y/length;
+    this.z = z/length;
+    return this;
+  },
 
-    length: function(){
-        return Math.sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
-    },
+  length: function(){
+    return Math.sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
+  },
 
-    distance: function(other){
-        var x = this.x - other.x;
-        var y = this.y - other.y;
-        var z = this.z - other.z
-        return Math.sqrt(x*x + y*y + z*z);
-    },
+  distance: function(other){
+    var x = this.x - other.x;
+    var y = this.y - other.y;
+    var z = this.z - other.z
+    return Math.sqrt(x*x + y*y + z*z);
+  },
 
-    copy: function(){
-        return new Vec(this.x, this.y, this.z);
-    }
+  copy: function(){
+    return new Vec(this.x, this.y, this.z);
+  }
 }
 
 var camera, scene, renderer, meshCenter;
