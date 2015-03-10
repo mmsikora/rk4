@@ -128,7 +128,7 @@ $(document).keydown(function(e) {
 
 var Simulation = function(obj){
     $(document).ready(function(){
-        renderer = new THREE.WebGLRenderer();
+        renderer = new THREE.WebGLRenderer({ antialiasing: true } );
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setClearColor( 0x404040);
