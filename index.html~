@@ -39,7 +39,7 @@
           {
             position: new Vec(0,-140, -120),
             velocity: new Vec(0, 0.5, 0.5),
-            mass: 0.0001
+            mass: 0.1
           }
 
         ],

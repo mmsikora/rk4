@@ -139,17 +139,18 @@ var Simulation = function(obj){
         scene = new THREE.Scene();
         
         // Sphere
-        for(var i = 0;  i < 2; i++) {
-          var sphere = new THREE.SphereGeometry(5, 32, 32);
-          var material = new THREE.MeshBasicMaterial( { color: 0xff00aa, wireframe: true } );
+        for(var i = 0;  i < 4; i++) {
+          if(i == 0) {
+            var sphere = new THREE.SphereGeometry(10, 32, 32);
+            var material = new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: true } );
+          }
+          else {
+            var sphere = new THREE.SphereGeometry(5, 32, 32);
+            var material = new THREE.MeshBasicMaterial( { color: 0xff00aa, wireframe: true } );
+          }
           mesh.push(new THREE.Mesh(sphere, material));
           scene.add(mesh[i]);
         }
-        //Center 
-        var sphere = new THREE.SphereGeometry(10, 32, 32);
-        var material = new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: true } );
-        meshCenter = new THREE.Mesh(sphere, material);
-        scene.add(meshCenter);
       
         //lines 
         material = new THREE.LineBasicMaterial({color: 0x0000ff});
@@ -176,88 +177,23 @@ var Simulation = function(obj){
         // Lights
         var light = new THREE.AmbientLight(0x808080);
         scene.add(light);
+
         $("body").append(renderer.domElement);
-/*
-        var node = $('#' + id);
-        var canvas = node[0];
-        var interval, context, last_time;
-        if(canvas && canvas.getContext){
-            context = canvas.getContext('2d');
-            context.fillStyle = 'rgba(40,40,40,1.0)';
-            context.fillRect(0, 0, canvas.width, canvas.height);
-*/
-            renderer.dot = function(position, radius, i){
-                var x = position.x, y = position.y, z = position.z;
-                if(i == 2) {
-                  meshCenter.position.x = x;   
-                  meshCenter.position.y = y;   
-                  meshCenter.position.z = z;   
-                } else {
-                  mesh[i].position.x = x;
-                  mesh[i].position.y = y;
-                  mesh[i].position.z = z;
-                }
-                if(!radius){
-                    radius = 1.0;
-                }
-                //var gradient = context.createRadialGradient(x, y, radius, x, y, radius);
-                //gradient.addColorStop(0, 'rgba(173,255,42,1.0)');
-                //gradient.addColorStop(1, 'rgba(173,255,42,0.0)');
-                //context.fillStyle = gradient;
-                //context.beginPath();
-                //context.arc(x, y, radius, 0, Math.PI*2, false);
-                //context.fill();
+            renderer.dot = function(position, i){
+                mesh[i].position.x = position.x;
+                mesh[i].position.y = position.y;
+                mesh[i].position.z = position.z;
             };
             renderer.line = function(a, b){
-              var material = new THREE.LineBasicMaterial({color: 0x0000ff, linewidth: 2});
+              var material = new THREE.LineBasicMaterial({color: 0x00ff88, linewidth: 2});
               var geometry = new THREE.Geometry();
               geometry.vertices.push(new THREE.Vector3(a.x, a.y, a.z));
               geometry.vertices.push(new THREE.Vector3(b.x, b.y, b.z));
               var line = new THREE.Line(geometry, material);
               scene.add(line);
-        
-                //context.strokeStyle = 'rgba(173,255,42,0.8)';
-                //context.lineWidth = 0.5;
-                //context.beginPath();
-                //context.moveTo(a.x, a.y);
-                //context.lineTo(b.x, b.y);
-                //context.stroke();
             };
-            obj.init();
             objB = obj;
             animate();
-            //var interval, last_time;
-
-            //renderer.hover(
-             //   function(){
-              //      if(!interval){
-                //        last_time = (new Date().getTime());
-                  //      interval = setInterval(function(){
-                    //        var current_time = (new Date()).getTime();
-                      //      var delta = current_time - last_time;
-                    //        last_time = current_time;
-                            //obj.step(delta);
-                      //      obj.step();
-                      //      renderer.render(scene, camera);
-                   //     }, 10);
-           //         }
-              //  },
-              //  function(){
-              //      if(interval){
-              //          clearInterval(interval);
-              //          interval = null;
-              //      }
-              //  }
-            //);
-            /*
-              .click(function(){
-                context.fillStyle = 'rgba(40,40,40,1.0)';
-                context.fillRect(0, 0, canvas.width, canvas.height);
-                obj.init(context);
-            });
-
-        }
-*/
     });
 }
 
@@ -265,12 +201,12 @@ var Simulation = function(obj){
 
 
 var G = 1500.0;
-var acceleration = function(center, body){
+var acceleration = function(center, body, mass){
     
     var direction = center.sub(body);
     var length = direction.length();
     var normal = direction.normalized();
-    return normal.mul(G/Math.pow(length, 2));
+    return normal.mul((G*mass)/Math.pow(length, 2));
 };
 
 var copy = function(){
@@ -297,27 +233,13 @@ var MultiBody = function(obj){
     var center = new Vec(400, 200, 0);
 
     var simulation = new Simulation({
-        init: function(){
-            //for(var i = 0; i < obj.bodies.length; i++) {
-            //  bodies[i] = obj.bodies[i].copy();
-            //}
-            //renderer.dot(center, 5);
-            //console.log(obj.body.position);
-            /*still needs to be delt with*/
-            //context.dot(center, 5);
-            //context.dot(obj.body.position, 1);
-            renderer.dot(center, 5, 2);
-        },
         step: function(){
             for(var i = 0; i < bodies.length; i++) {
               var previous = bodies[i].copy();
-              obj.step(center, bodies[i]);
-              renderer.dot(bodies[i].position, 5, i);
+              obj.step(center, bodies, i);
+              renderer.dot(bodies[i].position, i);
               renderer.line(previous.position, bodies[i].position);
             }
-            //console.log(body.position);
-            /*still needs to be delt with*/
-            //context.line(previous.position, body.position);
         }
     });
 };
