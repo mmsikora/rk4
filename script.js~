@@ -177,6 +177,7 @@ var Simulation = function(obj){
         var light = new THREE.AmbientLight(0x808080);
         scene.add(light);
         $("body").append(renderer.domElement);
+
 /*
         var node = $('#' + id);
         var canvas = node[0];
