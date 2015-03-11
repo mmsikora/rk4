@@ -106,26 +106,6 @@ $(window).resize(function() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
  
-$(document).keydown(function(e) {                                              
-  var msg;                                                                     
-  switch(e.which) {                                                            
-    case 37:  //left                                                           
-      scene.rotation.y += Math.PI/64;                                                                                                  
-      break;                                                                   
-    case 38: //up                                                              
-      scene.rotation.x += Math.PI/64;                                                                                 
-      break;                                                                   
-    case 39: //right                                                           
-      scene.rotation.y -= Math.PI/64;                                                                                                   
-      break;                                                                   
-    case 40: //down                                                            
-      scene.rotation.x -= Math.PI/64;                                                                                
-      break;                                                                   
-    default: return;                                                           
-  }                                                                            
-  e.preventDefault(); //prevents the default action (scroll / movecaret)       
-}); 
-
 var Simulation = function(obj){
     $(document).ready(function(){
         objBodies = obj;
