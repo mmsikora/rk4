@@ -13,9 +13,9 @@
   </style>
   <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
   <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-  <script src="three.min.js"></script>
-  <script src="OrbitControls.js"></script>
-  <script src="script.js"></script>
+  <script type="text/javascript" src="three.min.js"></script>
+  <script type="text/javascript" src="OrbitControls.js"></script>
+  <script type="text/javascript" src="script.js"></script>
 </head>
 <body>
 <script type="text/javascript">
@@ -97,9 +97,6 @@
             var body = bodies[i];
             for(var j = 0; j < bodies.length; j++) {
               if(j != i) {
-                //var acc = acceleration(previous[j].position, body.position, previous[j].mass);
-                //body.velocity.iadd(acc);
-                //body.position.iadd(body.velocity);
                 steps = 4;
                 delta = 1/steps;
                 for(var k = 0; k < steps; k++) {
