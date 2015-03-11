@@ -19,6 +19,45 @@
 </head>
 <body>
 <script type="text/javascript">
+    var Derivative = function(position, velocity) {
+        this.position = position ? position: new Vec(0, 0, 0);
+        this.velocity = velocity ? velocity: new Vec(0, 0, 0);
+
+        this.iadd = function(other) {
+            this.position.iadd(other.position);
+            this.velocity.iadd(other.velocity);
+            return this;
+        }
+        this.add = function(other) {
+            return new Derivative(
+                this.position.add(other.position),
+                this.velocity.add(other.velocity)
+            )
+        }
+        this.mul = function(scalar) {
+            return new Derivative(
+                this.position.mul(scalar),
+                this.velocity.mul(scalar)
+            )
+        }
+        this.imul = function(scalar) {
+            this.position.imul(scalar);
+            this.velocity.imul(scalar);
+            return this;
+        }
+    }
+    var compute = function(other, initial, delta, derivative) {
+        var state = derivative.mul(delta).add(initial);
+
+        return new Derivative(
+            state.velocity,
+            acceleration(other.position, state.position, other.mass)
+        );
+    }
+            
+    var d0 = new Derivative();
+
+ 
     new MultiBody({
         bodies: [
           {
@@ -53,15 +92,28 @@
             lineColor: 0x33a93a,
             radius: 5.0
           }
-
         ],
         step: function(previous, bodies, i){
             var body = bodies[i];
             for(var j = 0; j < bodies.length; j++) {
               if(j != i) {
-                var acc = acceleration(previous[j].position, body.position, previous[j].mass);
-                body.velocity.iadd(acc);
-                body.position.iadd(body.velocity);
+                //var acc = acceleration(previous[j].position, body.position, previous[j].mass);
+                //body.velocity.iadd(acc);
+                //body.position.iadd(body.velocity);
+                steps = 4;
+                delta = 1/steps;
+                for(var k = 0; k < steps; k++) {
+                  var d1 = compute(previous[j], body, delta*0.0, d0);
+                  var d2 = compute(previous[j], body, delta*0.5, d1);
+                  var d3 = compute(previous[j], body, delta*0.5, d2);
+                  var d4 = compute(previous[j], body, delta*1.0, d3);
+
+                  d2.iadd(d3).imul(2);
+                  d4.iadd(d1).iadd(d2).imul(1/6);
+
+                  body.position.iadd(d4.position.mul(delta));
+                  body.velocity.iadd(d4.velocity.mul(delta));
+                }
               }
             }
         }
