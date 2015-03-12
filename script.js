@@ -159,12 +159,18 @@ var Simulation = function(obj){
           mesh[i].position.z = position.z;
         };
         renderer.line = function(a, b, lineColor){
-          var material = new THREE.LineBasicMaterial({color: lineColor, linewidth: 2});
+          //var material = new THREE.LineBasicMaterial({color: lineColor, linewidth: 2});
+          //var geometry = new THREE.Geometry();
+          //geometry.vertices.push(new THREE.Vector3(a.x, a.y, a.z));
+          //geometry.vertices.push(new THREE.Vector3(b.x, b.y, b.z));
+          //var line = new THREE.Line(geometry, material);
+          //scene.add(line);
           var geometry = new THREE.Geometry();
           geometry.vertices.push(new THREE.Vector3(a.x, a.y, a.z));
-          geometry.vertices.push(new THREE.Vector3(b.x, b.y, b.z));
-          var line = new THREE.Line(geometry, material);
-          scene.add(line);
+          var material = new THREE.PointCloudMaterial({color: lineColor, size: 2, sizeAttenuation: false});
+          var dot = new THREE.PointCloud( geometry, material );
+          scene.add( dot );
+
         };
         animate();
     });

@@ -70,8 +70,8 @@
           },
           {
             position: new Vec(40, 120, 0),
-            velocity: new Vec(0, 1, 0),
-            mass: 0.0001,
+            velocity: new Vec(0, -1, 0),
+            mass: 0.001,
             color: 0xff9a98,
             lineColor: 0xd74440,
             radius: 5.0
@@ -79,7 +79,7 @@
           {
             position: new Vec(-100,140, 120),
             velocity: new Vec(0, 0, 1),
-            mass: 0.0001,
+            mass: 0.1,
             color: 0x6db3b7,
             lineColor: 0x287e82,
             radius: 5.0
@@ -87,7 +87,7 @@
           {
             position: new Vec(-100,-140, -120),
             velocity: new Vec(0, 0.5, 0.5),
-            mass: 0.0001,
+            mass: 0.1,
             color: 0x90d886,
             lineColor: 0x33a93a,
             radius: 5.0
@@ -97,8 +97,8 @@
             var body = bodies[i];
             for(var j = 0; j < bodies.length; j++) {
               if(j != i) {
-                steps = 4;
-                delta = 1/steps;
+                var steps = 4;
+                var delta = 1/steps;
                 for(var k = 0; k < steps; k++) {
                   var d1 = compute(previous[j], body, delta*0.0, d0);
                   var d2 = compute(previous[j], body, delta*0.5, d1);
